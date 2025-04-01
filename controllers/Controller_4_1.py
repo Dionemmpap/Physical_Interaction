@@ -6,7 +6,7 @@ from rclpy.node import Node
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from controllers.IK import inverse_kinematics
 from controllers.trajectory_utils import TrajectoryExecutor
-from controllers.Jacobian import compute_trajectory
+from controllers.Jacobian_final import compute_trajectory
 
 class Controller_4_1(Node):
     def __init__(self):
@@ -292,25 +292,26 @@ def main(args=None):
     controller.move_to_joint_position(controller.get_home_position())
     time.sleep(1)
 
-    # controller.execute_circle_trajectory(center_x=0, center_y=200, center_z=150, radius=50, num_points=100, delay=0.05)
-    # controller.wipe_spill_sequence()
+    # controller.execute_circle_trajectory(center_x=0, center_y=180, center_z=150, radius=80, num_points=100, delay=0.05)
+    # controller.execute_circle_trajectory(center_x=0, center_y=180, center_z=150, radius=80, num_points=100, delay=0.05)
+    controller.wipe_spill_sequence()
     # controller.pick_and_place_sequence()
     # controller.berry_pick_and_place()
     
     
-    initial_angles = [0, 30, 0, 0]  # Initial joint angles in degrees
-    velocity = [-10, 0, 0]  # 20mm/s in X direction (increased for visibility)
+    # initial_angles = [60, -30, -30, 0]  # Initial joint angles in degrees
+    # velocity = [0, -10, 0]  # 20mm/s in X direction (increased for visibility)
     
-    controller.get_logger().info("Starting Jacobian velocity trajectory")
-    final_pos = controller.Jacobian_velocity_traj(
-        initial_angles, 
-        velocity, 
-        delta_t=0.2,  # Larger time step
-        num_steps=150,  # Fewer steps for testing
-        gripper_pos=0.0
-    )
+    # controller.get_logger().info("Starting Jacobian velocity trajectory")
+    # final_pos = controller.Jacobian_velocity_traj(
+    #     initial_angles, 
+    #     velocity, 
+    #     delta_t=0.2,  # Larger time step
+    #     num_steps=150,  # Fewer steps for testing
+    #     gripper_pos=0.0
+    # )
     
-    controller.get_logger().info(f"Final position: {final_pos}")
+    # controller.get_logger().info(f"Final position: {final_pos}")
     
     
     # Return to home
