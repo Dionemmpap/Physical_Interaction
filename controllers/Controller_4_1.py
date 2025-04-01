@@ -292,28 +292,36 @@ def main(args=None):
     controller.move_to_joint_position(controller.get_home_position())
     time.sleep(1)
 
-    # controller.execute_circle_trajectory(center_x=0, center_y=180, center_z=150, radius=80, num_points=100, delay=0.05)
-    # controller.execute_circle_trajectory(center_x=0, center_y=180, center_z=150, radius=80, num_points=100, delay=0.05)
-    controller.wipe_spill_sequence()
-    # controller.pick_and_place_sequence()
-    # controller.berry_pick_and_place()
-    
-    
-    # initial_angles = [60, -30, -30, 0]  # Initial joint angles in degrees
-    # velocity = [0, -10, 0]  # 20mm/s in X direction (increased for visibility)
-    
-    # controller.get_logger().info("Starting Jacobian velocity trajectory")
-    # final_pos = controller.Jacobian_velocity_traj(
-    #     initial_angles, 
-    #     velocity, 
-    #     delta_t=0.2,  # Larger time step
-    #     num_steps=150,  # Fewer steps for testing
-    #     gripper_pos=0.0
-    # )
-    
-    # controller.get_logger().info(f"Final position: {final_pos}")
-    
-    
+    # Ask the user for a trajectory type
+    trajectory_type = input("Enter trajectory type: 1 (circle), 2 (pick and place), 3 (berry pick and place), 4 (wipe spill), 5 (Jacobian velocity trajectory):  ")
+    if trajectory_type == '1':
+        controller.get_logger().info("Executing circular trajectory")
+        for i in range(2):
+            controller.execute_circle_trajectory(center_x=0, center_y=180, center_z=150, radius=80, num_points=100, delay=0.05)
+        controller.get_logger().info("Circular trajectory completed")
+    elif trajectory_type == '2':
+        controller.get_logger().info("Executing pick and place sequence")
+        controller.pick_and_place_sequence()
+    elif trajectory_type == '3':
+        controller.get_logger().info("Executing berry pick and place sequence")
+        controller.berry_pick_and_place()
+    elif trajectory_type == '4':
+        controller.get_logger().info("Executing wipe spill sequence")
+        controller.wipe_spill_sequence()
+    elif trajectory_type == '5':
+        controller.get_logger().info("Executing Jacobian velocity trajectory")
+        initial_angles = [60, -30, -30, 0]  # Initial joint angles in degrees
+        velocity = [0, -10, 0]  # -10mm/s in Y direction
+        
+        controller.get_logger().info("Starting Jacobian velocity trajectory")
+        final_pos = controller.Jacobian_velocity_traj(
+            initial_angles, 
+            velocity, 
+            delta_t=0.2,  
+            num_steps=150,  
+            gripper_pos=0.0
+        )
+            
     # Return to home
     controller.move_to_joint_position(controller.get_home_position())
 
