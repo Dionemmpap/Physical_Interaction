@@ -1,4 +1,4 @@
-# Lynxmotion AL5A ROS2 Control System
+# Lynxmotion AL5A ROS2 Control System based on Edubot
 
 This project is a comprehensive ROS2-based robot arm control system for the Lynxmotion AL5A robot arm. It implements inverse kinematics, Jacobian-based velocity control, and trajectory planning for various manipulation tasks.
 
