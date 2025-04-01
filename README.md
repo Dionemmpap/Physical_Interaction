@@ -10,13 +10,13 @@ Please follow the following instructions to run the code:
     Copy all project files to `edubot/python_impl/src/controllers`.
 
 2.  **Build the Workspace:**  
-    Navigate to your ROS2 workspace directory containing the `edubot` package and build it:
+    Navigate to your workspace directory containing the `edubot` package and build it:
     
     ```bash
-    cd /path/to/your/ros2_ws/edubot/python_impl
+    cd /path/to/your/ws/edubot/python_impl
     colcon build
     ```
-    *(Replace `/path/to/your/ros2_ws/` with the actual path to your ROS2 workspace)*
+    *(Replace `/path/to/your/ws/` with the actual path to your ROS2 workspace)*
 
 3.  **Launch RViz Simulation:**  
     Open RViz with the robot model:
@@ -29,9 +29,8 @@ Please follow the following instructions to run the code:
     Open a new terminal, source your workspace, and run the main controller node:
     
     ```bash
-    # Navigate to your workspace directory first if needed
-    # cd /path/to/your/ros2_ws/
-    source install/setup.bash
+    
+    source python_impl/install/setup.bash
     ros2 run controllers Controller_4_1
     ```
 
@@ -49,7 +48,7 @@ The project follows this directory structure within `edubot/python_impl/src/cont
 controllers/
 ├── __init__.py                    # Package initialization
 ├── Controller_4_1.py              # Main controller implementation
-├── example_traj.py                # Example trajectory generation
+├── example_traj.py                # Example trajectory 
 ├── IK.py                          # Inverse kinematics module
 ├── IK_set_wrist_angle.py          # IK with fixed wrist angle
 ├── Jacobian.py                    # Basic Jacobian implementation
