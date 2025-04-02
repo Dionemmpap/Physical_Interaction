@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from controllers.workspacedifferentapproach3d import forward_kinematics_3D
 from controllers.IK import forward_kinematics
 
-# Home position: [16.5, 0, 10]
 
 # Define angle limits according to robot coordinates:
 theta1_range = [-100, 90]  # rotating base
