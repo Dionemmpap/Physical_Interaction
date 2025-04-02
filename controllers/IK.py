@@ -1,9 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-# from mpl_toolkits.mplot3d import Axes3D
-# import plotly.io as pio
-# pio.renderers.default = "browser"
-
 
 # Define Lynxmotion AL5A Link Lengths (in mm)
 L1 = 67 # Base height
@@ -56,36 +52,26 @@ def inverse_kinematics(x, y, z):
     theta2_up = np.degrees(alpha + beta)
     theta3_up = -(180-np.degrees(np.arccos(cos_theta3)))
 
-    #Elbow down:
-    theta2_down = np.degrees(alpha - beta)
-    theta3_down = 180-np.degrees(np.arccos(cos_theta3))
-        
-    
     # Solve for theta_4
     theta4_up = np.degrees(np.arctan2(
-        z_prime - (L2 * np.sin(np.radians(theta2_up)) + L3 * np.sin(np.radians(theta2_up + theta3_up))),        #fixed the signs and fixed radians calculations that were giving wrong outputs
+        z_prime - (L2 * np.sin(np.radians(theta2_up)) + L3 * np.sin(np.radians(theta2_up + theta3_up))),        
         r_prime - (L2 * np.cos(np.radians(theta2_up)) + L3 * np.cos(np.radians(theta2_up + theta3_up)))
     )) - (theta2_up + theta3_up)
-
-    theta4_down = np.degrees(np.arctan2(
-        z_prime - (L2 * np.sin(np.radians(theta2_down)) + L3 * np.sin(np.radians(theta2_down + theta3_down))),
-        r_prime - (L2 * np.cos(np.radians(theta2_down)) + L3 * np.cos(np.radians(theta2_down + theta3_down)))
-    )) - (theta2_down + theta3_down)
     
-    # Define angle limits according to robot coordinates:
-    theta1_range = [-100, 90] #rotating base
-    theta2_range = [-90, 45] #shoulder to elbow
-    theta3_range = [-90, 85] #elbow to wrist
-    theta4_range = [-95, 95] #wrist to end-effector
+  # Define angle limits according to robot coordinates with 2-degree tolerance:
+    theta1_range = [-102, 92]  # rotating base
+    theta2_range = [-92, 47]   # shoulder to elbow
+    theta3_range = [-92, 87]   # elbow to wrist
+    theta4_range = [-97, 97]   # wrist to end-effector
 
 
     #Convert angles from IK to robot coordinates:
     theta2_robot_up = theta2_up - 90
-    theta2_robot_down = theta2_down - 90
+    
     theta3_robot_up = -(theta3_up + 90)
-    theta3_robot_down = -(theta3_down + 90)
+    
     theta4_robot_up = theta4_up
-    theta4_robot_down = theta4_down
+    
 
     # If the angles are within limits, return them
     if (theta1_range[0] <= theta1 <= theta1_range[1] and
@@ -93,11 +79,6 @@ def inverse_kinematics(x, y, z):
         theta3_range[0] <= theta3_robot_up <= theta3_range[1] and
         theta4_range[0] <= theta4_robot_up <= theta4_range[1]):
         return ["Elbow up:", theta1, theta2_robot_up, theta3_robot_up, theta4_robot_up]
-    elif (theta1_range[0] <= theta1 <= theta1_range[1] and
-          theta2_range[0] <= theta2_robot_down <= theta2_range[1] and
-          theta3_range[0] <= theta3_robot_down <= theta3_range[1] and
-          theta4_range[0] <= theta4_robot_down <= theta4_range[1]):
-        return ["Elbow down:", theta1, theta2_robot_down, theta3_robot_down, theta4_robot_down]
     else:
         return("Position out of reach")
 
@@ -111,10 +92,10 @@ s2 = [200.0, 100.0, 300.0]
 s3 = [0.0, 0.0, 300.0]
 s4 = [0.0, 0.0, 70.0]
 
-# print(inverse_kinematics(*s1))
-# print(inverse_kinematics(*s2))
-# print(inverse_kinematics(*s3))
-# print(inverse_kinematics(*s4))
+print(inverse_kinematics(*s1))
+print(inverse_kinematics(*s2))
+print(inverse_kinematics(*s3))
+print(inverse_kinematics(*s4))
 
 def forward_kinematics(theta1, theta2, theta3, theta4):
     """ Compute joint positions from joint angles """
@@ -181,8 +162,9 @@ def plot_robot_arm(joint_positions, solution_label):
     
     plt.show()
 
-# Plot s1 (only feasible position) without elbow up string
-# plot_robot_arm(forward_kinematics(*inverse_kinematics(*s1)[1:]), "Elbow up")
+# Plot s1 and s3 without elbow up string
+plot_robot_arm(forward_kinematics(*inverse_kinematics(*s1)[1:]), "Elbow up")
+plot_robot_arm(forward_kinematics(*inverse_kinematics(*s3)[1:]), "Elbow up")
 
 def main():
     print("Forward Kinematics")
